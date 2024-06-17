@@ -11,7 +11,12 @@ function PatientDetails({patient}: PatientDetailsProps) {
   const deletePatient = usePatientStore((state) => state.deletePatient)
   const getPatientById = usePatientStore((state) => state.getPatientById)
 
-  const handleClick = () => {
+  const handleEdit = () => {
+    getPatientById(patient.id)
+    window.scrollTo({top: 0, behavior: 'smooth'})
+  }
+
+  const handleDelete = () => {
     deletePatient(patient.id)
     toast.error('Paciente eliminado')
   }
@@ -29,7 +34,7 @@ function PatientDetails({patient}: PatientDetailsProps) {
         <button
           className='py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase rounded-lg'
           type='button'
-          onClick={() => getPatientById(patient.id)}
+          onClick={handleEdit}
         >
           Editar
         </button>
@@ -37,7 +42,7 @@ function PatientDetails({patient}: PatientDetailsProps) {
         <button
           className='py-2 px-10 bg-red-600 hover:bg-red-700 text-white font-bold uppercase rounded-lg'
           type='button'
-          onClick={handleClick}
+          onClick={handleDelete}
         >
           Eliminar
         </button>
