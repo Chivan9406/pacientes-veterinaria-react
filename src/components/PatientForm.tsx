@@ -21,6 +21,8 @@ export default function PatientForm() {
       setValue('email', activePatient.email)
       setValue('date', activePatient.date)
       setValue('symptoms', activePatient.symptoms)
+    } else {
+      reset()
     }
   }, [activeId])
 

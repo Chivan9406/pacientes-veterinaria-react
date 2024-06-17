@@ -10,6 +10,7 @@ type PatientDetailsProps = {
 function PatientDetails({patient}: PatientDetailsProps) {
   const deletePatient = usePatientStore((state) => state.deletePatient)
   const getPatientById = usePatientStore((state) => state.getPatientById)
+  const resetActiveId = usePatientStore((state) => state.resetActiveId)
 
   const handleEdit = () => {
     getPatientById(patient.id)
@@ -18,6 +19,7 @@ function PatientDetails({patient}: PatientDetailsProps) {
 
   const handleDelete = () => {
     deletePatient(patient.id)
+    resetActiveId()
     toast.error('Paciente eliminado')
   }
 
