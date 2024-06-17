@@ -10,7 +10,8 @@ export default function PatientForm() {
   const activeId = usePatientStore((state) => state.activeId)
   const patients = usePatientStore((state) => state.patients)
   const updatePatient = usePatientStore((state) => state.updatePatient)
-  const {register, handleSubmit, setValue, formState: {errors}, reset} = useForm<DraftPatient>()
+  const resetActiveId = usePatientStore((state) => state.resetActiveId)
+  const {register, handleSubmit, reset, watch, setValue, formState: {errors}} = useForm<DraftPatient>()
 
   useEffect(() => {
     if (activeId) {
@@ -21,7 +22,7 @@ export default function PatientForm() {
       setValue('date', activePatient.date)
       setValue('symptoms', activePatient.symptoms)
     }
-  }, [activeId]);
+  }, [activeId])
 
   const registerPatient = (data: DraftPatient) => {
     if (activeId) {
@@ -33,6 +34,14 @@ export default function PatientForm() {
     }
     reset()
   }
+
+  const handleReset = () => {
+    resetActiveId()
+    reset()
+  }
+
+  const formValues = watch()
+  const isFormEmpty = Object.values(formValues).every(value => !value)
 
   return (
     <div className="md:w-1/2 lg:w-2/5 mx-5">
@@ -145,11 +154,22 @@ export default function PatientForm() {
           )}
         </div>
 
-        <input
-          type="submit"
-          className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-          value={activeId ? 'Actualizar Paciente' : 'Guardar Paciente'}
-        />
+        <div className='flex justify-between flex-col lg:flex-row gap-3 '>
+          <input
+            type="submit"
+            className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
+            value={activeId ? 'Actualizar Paciente' : 'Guardar Paciente'}
+          />
+
+          <button
+            type="button"
+            className="bg-red-600 w-full p-3 text-white uppercase font-bold hover:bg-red-600 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleReset}
+            disabled={isFormEmpty}
+          >
+            Reset
+          </button>
+        </div>
       </form>
     </div>
   )
